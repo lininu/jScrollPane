@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>jScrollPane - custom style</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../script/jquery.mousewheel.js"></script>
+    <script src="../script/jquery.jscrollpane.min.js"></script>
+    <script src="../script/jquery.custjScrollPane.js"></script>
+    <style>
+        .container {
+            margin: 20px auto;
+            width: 320px;
+        }
+        .scrollbar--cust-arrow li {
+            font-size: 2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="scrollbar--cust-arrow">
+            <div>
+                <ul>
+                    <li>ABOUT</li>
+                    <li>HOME</li>
+                    <li>MESSAGE</li>
+                    <li>FRIENDS</li>
+                    <li class="active">BLOG</li>
+                </ul>
+            </div>
+        </div>
+        <div class="scrollbar--cust-arrow">
+            <div>
+                <ul>
+                    <li>ABOUT</li>
+                    <li>OTHER</li>
+                    <li>HOME</li>
+                    <li>MESSAGE</li>
+                    <li class="active">FRIENDS</li>
+                    <li>BLOG</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            var scrollbar = $('.scrollbar').custScrollbar({
+                leftClick: function(_this) {
+                    this.scrollDistance(_this, this, -1);
+                }
+            });
+
+            setTimeout(function(){
+                console.log(scrollbar.scrollToEle('.active'));
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
