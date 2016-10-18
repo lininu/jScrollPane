@@ -53,9 +53,13 @@
                 .jScrollPane(navBarOptions)
                 .bind('jsp-scroll-x', function(event, scrollPositionX, isAtLeft, isAtRight) {
                     var arrowleft = $(this).find('.' + navBarOptions.custArrowClassName + '-left'),
-                        arrowright = $(this).find('.' + navBarOptions.custArrowClassName + '-right');
+                        arrowright = $(this).find('.' + navBarOptions.custArrowClassName + '-right'),
+                        containerWidth = $(this).width();
                     var thisNavBarApi = $(this).data('jsp'),
-                        thisNavBarXPercent = parseInt(thisNavBarApi.getPercentScrolledX() * 100);
+                        thisNavBarXPercent = parseInt(thisNavBarApi.getPercentScrolledX() * 100),
+                        thisNavBarContainerWidth = thisNavBarApi.getContentWidth();
+
+                        // console.log($(this).width(), thisNavBarApi.getContentWidth())
 
                     if (isAtLeft || thisNavBarXPercent < 10)
                         $(arrowleft).addClass(navBarOptions.custArrowHideStatusClassName);
@@ -84,6 +88,13 @@
                         $(arrowright).animate({
                             'right': ''
                         }, 0);
+
+                    // it cannot scroll (though IE can't detect whether jsp-initialised isScrollable or not QQ )
+                    if(thisNavBarContainerWidth <= containerWidth) {
+                        $(arrowright).animate({
+                            'right': $(arrowright).outerWidth() * -1
+                        }, 0);
+                    }
                 })
                 .mouseenter(function() {
                     $(this).find('.jspDrag').addClass(navBarOptions.custScrollbarShowClassName);
@@ -194,6 +205,7 @@
                 navBarOptions.custRoot.each(function(i, e) {
                     var _that = $(this).data('jsp');
                     _that.reinitialise();
+                    $(this).find('.jspContainer').height(_that.getContentHeight());
                 });
             }, navBarOptions.ctReloadTime);
         });
