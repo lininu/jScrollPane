@@ -18,7 +18,7 @@
                 createArrow: function(that) {
                     if (!navBarOptions.custNav)
                         return;
-                    $(that).find('.jspContainer').append('<div class="' + navBarOptions.custArrowClassName + '"><button class="' + navBarOptions.custArrowClassName + '-left"></button><button class="' + navBarOptions.custArrowClassName + '-right"></button></div>');
+                    $(that).find('.jspContainer').append('<div class="' + navBarOptions.custArrowClassName + '"><button type="button" class="' + navBarOptions.custArrowClassName + '-left"></button><button type="button" class="' + navBarOptions.custArrowClassName + '-right"></button></div>');
                 },
                 leftClick: null,
                 rightClick: null,
@@ -48,14 +48,20 @@
                     } else {
                         $(this).find('.' + navBarOptions.custArrowClassName).fadeOut();
                     }
+                    // console.log($(this).width(), $(this).);
+                    
                     $(this).trigger('jsp-scroll-x');
                 })
                 .jScrollPane(navBarOptions)
                 .bind('jsp-scroll-x', function(event, scrollPositionX, isAtLeft, isAtRight) {
                     var arrowleft = $(this).find('.' + navBarOptions.custArrowClassName + '-left'),
-                        arrowright = $(this).find('.' + navBarOptions.custArrowClassName + '-right');
+                        arrowright = $(this).find('.' + navBarOptions.custArrowClassName + '-right'),
+                        containerWidth = $(this).width();
                     var thisNavBarApi = $(this).data('jsp'),
-                        thisNavBarXPercent = parseInt(thisNavBarApi.getPercentScrolledX() * 100);
+                        thisNavBarXPercent = parseInt(thisNavBarApi.getPercentScrolledX() * 100),
+                        thisNavBarContainerWidth = thisNavBarApi.getContentWidth();
+
+                        // console.log($(this).width(), thisNavBarApi.getContentWidth())
 
                     if (isAtLeft || thisNavBarXPercent < 10)
                         $(arrowleft).addClass(navBarOptions.custArrowHideStatusClassName);
@@ -84,6 +90,13 @@
                         $(arrowright).animate({
                             'right': ''
                         }, 0);
+
+                    // it cannot scroll (though IE can't detect whether jsp-initialised isScrollable or not QQ )
+                    if(thisNavBarContainerWidth <= containerWidth) {
+                        $(arrowright).animate({
+                            'right': $(arrowright).outerWidth() * -1
+                        }, 0);
+                    }
                 })
                 .mouseenter(function() {
                     $(this).find('.jspDrag').addClass(navBarOptions.custScrollbarShowClassName);
@@ -194,6 +207,8 @@
                 navBarOptions.custRoot.each(function(i, e) {
                     var _that = $(this).data('jsp');
                     _that.reinitialise();
+                    $(this).find('.jspContainer').height(_that.getContentHeight());
+                    // console.log(123, _that)
                 });
             }, navBarOptions.ctReloadTime);
         });
