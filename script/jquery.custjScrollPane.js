@@ -18,7 +18,7 @@
                 createArrow: function(that) {
                     if (!navBarOptions.custNav)
                         return;
-                    $(that).find('.jspContainer').append('<div class="' + navBarOptions.custArrowClassName + '"><button class="' + navBarOptions.custArrowClassName + '-left"></button><button class="' + navBarOptions.custArrowClassName + '-right"></button></div>');
+                    $(that).find('.jspContainer').append('<div class="' + navBarOptions.custArrowClassName + '"><button type="button" class="' + navBarOptions.custArrowClassName + '-left"></button><button type="button" class="' + navBarOptions.custArrowClassName + '-right"></button></div>');
                 },
                 leftClick: null,
                 rightClick: null,
@@ -48,6 +48,8 @@
                     } else {
                         $(this).find('.' + navBarOptions.custArrowClassName).fadeOut();
                     }
+                    // console.log($(this).width(), $(this).);
+                    
                     $(this).trigger('jsp-scroll-x');
                 })
                 .jScrollPane(navBarOptions)
@@ -206,6 +208,7 @@
                     var _that = $(this).data('jsp');
                     _that.reinitialise();
                     $(this).find('.jspContainer').height(_that.getContentHeight());
+                    // console.log(123, _that)
                 });
             }, navBarOptions.ctReloadTime);
         });
